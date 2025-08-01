@@ -1,1 +1,3 @@
-/* Add your custom extension styling here */
+.dim-overlay {
+    background-color: rgba(0, 0, 0, 0.5);
+}

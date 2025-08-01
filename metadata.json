@@ -4,5 +4,6 @@
   "uuid": "overlaydimmer@domgregori.github.com",
   "shell-version": [
     "48"
-  ]
+  ],
+  "stylesheet": "stylesheet.css"
 }

@@ -19,3 +19,4 @@ Settings are accessed in the extension manager.
 - [ ] Make _pref_ to save settings
 - [ ] Add ability to set from the command line somehow
 - [ ] Possible change icon for toggled on/off
+- [ ] Allow to choose the shade of the overlay (night mode)

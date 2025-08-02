@@ -2,6 +2,7 @@
   "name": "OverlayDimmer",
   "description": "Dim the screen with an overlay",
   "uuid": "overlaydimmer@domgregori.github.com",
-  "shell-version": ["47", "48"],
-  "stylesheet": "stylesheet.css"
+  "shell-version": ["45", "46", "47", "48", "49"],
+  "stylesheet": "stylesheet.css",
+  "settings-schema": "org.gnome.shell.extensions.overlaydimmer"
 }

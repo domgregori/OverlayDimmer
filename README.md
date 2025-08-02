@@ -1,10 +1,10 @@
 ## OverlayDimmer
 
-I have some displays that you can not adjust the back light with utilities. So I made this extension that uses an overlay to dim the screen instead.
+A gnome extension for dimming the screen with an overlay.
 
 ### How to use
 
-Toggle overlay by clicking the icon in the status bar. Right click to adjust the dimmness.
+Toggle overlay by clicking the icon in the status bar. Right click to adjust the dimness.
 Settings are accessed in the extension manager.
 
 ---
@@ -14,6 +14,8 @@ Settings are accessed in the extension manager.
 - [ ] Add a slider, activated by right click, to change how much to dim.
 - [ ] Make a settings page
   - Color of icon
-  - Default dimmness
+  - Default dimness
     - Cap top and bottom opacity
 - [ ] Make _pref_ to save settings
+- [ ] Add ability to set from the command line somehow
+- [ ] Possible change icon for toggled on/off

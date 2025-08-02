@@ -37,10 +37,10 @@ export default class OverlayDimmerExtension extends Extension {
   enable() {
     this._indicator = new PanelMenu.Button(this.metadata.name);
     const icon = new St.Icon({
-      style_class: "system-status-icon"
+      style_class: "system-status-icon overlaydimmer-icon"
     });
     icon.gicon = Gio.icon_new_for_string(
-      this.path + "/icons/overlaydimmer.svg"
+      this.path + "/icons/overlaydimmer.symbolic.png"
     );
     this._indicator.add_child(icon);
 
@@ -95,36 +95,3 @@ export default class OverlayDimmerExtension extends Extension {
     }
   }
 }
-
-//   enable() {
-//     this._indicator = new Indicator();
-//     Main.panel.addToStatusArea(this.uuid, this._indicator);
-//
-//     const primaryMonitor = Main.layoutManager.primaryMonitor;
-//
-//     this._overlay = new St.Bin({
-//       style_class: "dim-overlay",
-//       reactive: false,
-//       can_focus: false,
-//       track_hover: false,
-//       width: primaryMonitor.width,
-//       height: primaryMonitor.height,
-//       visible: false
-//     });
-//     Main.uiGroup.add_child(this._overlay);
-//
-//     this._indicator.connect("button-press-event", () => {
-//       this._overlay.visible = !this._overlay.visible;
-//     });
-//   }
-//
-//   disable() {
-//     this._indicator.destroy();
-//     this._indicator = null;
-//
-//     if (this._overlay) {
-//       this._overlay.destroy();
-//       this._overlay = null;
-//     }
-//   }
-// }

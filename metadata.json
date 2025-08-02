@@ -1,9 +1,7 @@
 {
-  "name": "Overlay Dimmer",
+  "name": "OverlayDimmer",
   "description": "Dim the screen with an overlay",
   "uuid": "overlaydimmer@domgregori.github.com",
-  "shell-version": [
-    "48"
-  ],
+  "shell-version": ["47", "48"],
   "stylesheet": "stylesheet.css"
 }

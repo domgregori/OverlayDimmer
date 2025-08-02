@@ -16,56 +16,115 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-import GObject from 'gi://GObject';
-import St from 'gi://St';
+import GObject from "gi://GObject";
+import St from "gi://St";
+import Gio from "gi://Gio";
 
-import {Extension, gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js';
-import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
+import * as PanelMenu from "resource:///org/gnome/shell/ui/panelMenu.js";
+import * as Main from "resource:///org/gnome/shell/ui/main.js";
 
-import * as Main from 'resource:///org/gnome/shell/ui/main.js';
-
-const Indicator = GObject.registerClass(
-class Indicator extends PanelMenu.Button {
-    _init() {
-        super._init(0.0, _('Toggle Dim Overlay'));
-
-        this.add_child(new St.Icon({
-            icon_name: 'lightbulb-symbolic',
-            style_class: 'system-status-icon',
-        }));
-    }
-});
+// import { Extension } from "resource:///org/gnome/shell/extensions/extension.js";
+import {
+  Extension,
+  gettext as _
+} from "resource:///org/gnome/shell/extensions/extension.js";
 
 export default class OverlayDimmerExtension extends Extension {
-    enable() {
-        this._indicator = new Indicator();
-        Main.panel.addToStatusArea(this.uuid, this._indicator);
+  constructor(metadata) {
+    super(metadata);
+  }
 
-        const primaryMonitor = Main.layoutManager.primaryMonitor;
+  enable() {
+    this._indicator = new PanelMenu.Button(this.metadata.name);
+    const icon = new St.Icon({
+      style_class: "system-status-icon"
+    });
+    icon.gicon = Gio.icon_new_for_string(
+      this.path + "/icons/overlaydimmer.svg"
+    );
+    this._indicator.add_child(icon);
 
-        this._overlay = new St.Bin({
-            style_class: 'dim-overlay',
-            reactive: false,
-            can_focus: false,
-            track_hover: false,
-            width: primaryMonitor.width,
-            height: primaryMonitor.height,
-            visible: false,
-        });
-        Main.uiGroup.add_child(this._overlay);
+    Main.panel.addToStatusArea(this.uuid, this._indicator);
+    this._tapHandler = this._indicator.connect(
+      "touch-event",
+      this._buttonActivated.bind(this)
+    );
+    this._clickHandler = this._indicator.connect(
+      "button-press-event",
+      this._buttonActivated.bind(this)
+    );
+  }
 
-        this._indicator.connect('button-press-event', () => {
-            this._overlay.visible = !this._overlay.visible;
-        });
+  disable() {
+    if (this._tapHandler) {
+      this._indicator.disconnect(this._tapHandler);
+      this._tapHandler = null;
+    }
+    if (this._clickHandler) {
+      this._indicator.disconnect(this._clickHandler);
+      this._clickHandler = null;
     }
 
-    disable() {
-        this._indicator.destroy();
-        this._indicator = null;
-
-        if (this._overlay) {
-            this._overlay.destroy();
-            this._overlay = null;
-        }
+    if (this._overlay) {
+      this._overlay.destroy();
+      this._overlay = null;
     }
+
+    if (this._indicator) {
+      this._indicator.destroy();
+      this._indicator = null;
+    }
+  }
+
+  _buttonActivated() {
+    if (this._overlay) {
+      this._overlay.visible = !this._overlay.visible;
+    } else {
+      const primaryMonitor = Main.layoutManager.primaryMonitor;
+      this._overlay = new St.Bin({
+        style_class: "dim-overlay",
+        reactive: false,
+        can_focus: false,
+        track_hover: false,
+        width: primaryMonitor.width,
+        height: primaryMonitor.height,
+        visible: true
+      });
+
+      Main.uiGroup.add_child(this._overlay);
+    }
+  }
 }
+
+//   enable() {
+//     this._indicator = new Indicator();
+//     Main.panel.addToStatusArea(this.uuid, this._indicator);
+//
+//     const primaryMonitor = Main.layoutManager.primaryMonitor;
+//
+//     this._overlay = new St.Bin({
+//       style_class: "dim-overlay",
+//       reactive: false,
+//       can_focus: false,
+//       track_hover: false,
+//       width: primaryMonitor.width,
+//       height: primaryMonitor.height,
+//       visible: false
+//     });
+//     Main.uiGroup.add_child(this._overlay);
+//
+//     this._indicator.connect("button-press-event", () => {
+//       this._overlay.visible = !this._overlay.visible;
+//     });
+//   }
+//
+//   disable() {
+//     this._indicator.destroy();
+//     this._indicator = null;
+//
+//     if (this._overlay) {
+//       this._overlay.destroy();
+//       this._overlay = null;
+//     }
+//   }
+// }
